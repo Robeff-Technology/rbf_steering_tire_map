@@ -76,9 +76,14 @@ if __name__ == '__main__':
         print(f'{util.bcolors.FAIL}An error occured ->{err}{util.bcolors.ENDC}')
         exit()
 
+    with open("steering_tire_map.csv", 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['Steering Angle(degree)', 'Tire Angle(rad)'])
+        for i in range(len(steer_array)):
+            writer.writerow([steer_array[i], tire_array[i]])
+
     print(f"{util.bcolors.OKGREEN}header file added...{util.bcolors.ENDC}")
-    plt.xlabel('Steering Angle(degree)')
-    plt.ylabel('Tire Angle(radian)')
+
     plt.plot(steer_array, tire_array)
     plt.show()
     
