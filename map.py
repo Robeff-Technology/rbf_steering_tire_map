@@ -84,6 +84,17 @@ if __name__ == '__main__':
 
     print(f"{util.bcolors.OKGREEN}header file added...{util.bcolors.ENDC}")
 
+
+
     plt.plot(steer_array, tire_array)
+
+    delta_y = float(tire_array[len(tire_array) - 1]) - float(tire_array[0])
+    delta_x = float(steer_array[len(steer_array) - 1]) - float(steer_array[0])
+    slope = delta_y / delta_x
+    print(f"slope = {slope}")
+    linear_array = []
+    for i in range(len(steer_array)):
+        linear_array.append( float(steer_array[i]) * slope)
+    plt.plot(steer_array, linear_array)
     plt.show()
     
