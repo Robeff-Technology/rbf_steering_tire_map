@@ -4,7 +4,25 @@ import csv
 import util
 import math
 import matplotlib.pyplot as plt
+from pyproj import Proj, transform
+
+
+
+def lat_long_to_utm(latitude, longitude):
+    # Define the projection for WGS 84 (EPSG:4326)
+    wgs84 = Proj(proj='latlong', datum='WGS84')
+
+    # Define the projection for UTM (EPSG:32600 for zone 1, adjust the zone based on your location)
+    utm = Proj(proj='utm', zone=1, datum='WGS84')
+
+    # Convert latitude and longitude to UTM
+    utm_easting, utm_northing = transform(wgs84, utm, longitude, latitude)
+
+    return utm_easting, utm_northing
+
+
 L = 0.0
+
 def open_file_dialog():
     root = tk.Tk()
     root.withdraw()
@@ -57,7 +75,11 @@ if __name__ == '__main__':
                 next(read_column)
                 for row in read_column:
                     steer_array.append(row[0])
-                    coordinate_array.append([row[1], row[2], row[3], row[4],row[5],row[6]])
+                    x1,y1 = lat_long_to_utm(float(row[1]), float(row[2]))
+                    x2,y2 = lat_long_to_utm(float(row[3]), float(row[4]))
+                    x3,y3 = lat_long_to_utm(float(row[5]), float(row[6]))
+
+                    coordinate_array.append([x1, y1, x2, y2, x3, y3])
         else:
             print(f'{util.bcolors.FAIL}.csv file not added{util.bcolors.ENDC}')
             exit()
